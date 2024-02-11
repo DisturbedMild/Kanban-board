@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext } from 'react-beautiful-dnd';
 
@@ -23,7 +23,7 @@ const Boards = ({ projectName }: BoardsProps) => {
   const [boards, setBoards] = useState<IData>();
 
   // Creating new empty board list
-  const createNewListHandler = useCallback((listTitle: string) => {
+  const createNewListHandler = (listTitle: string) => {
     setBoards((prevState) => {
       if (prevState) {
 
@@ -58,9 +58,9 @@ const Boards = ({ projectName }: BoardsProps) => {
       }
 
     })
-  }, [boards])
+  }
 
-  const removeBoard = useCallback((column: IColumn) => {
+  const removeBoard = (column: IColumn) => {
     setBoards((prevState) => {
       if (prevState) {
         const updatedColumnOrder = prevState?.columnOrder.filter((id: string) => id !== column.id);
@@ -75,12 +75,14 @@ const Boards = ({ projectName }: BoardsProps) => {
         return newState;
       }
     })
-  }, [boards])
+  }
 
   // Creating new Task
-  const createNewTaskHandler = useCallback((task: ITask, taskName: string, columnId: string) => {
+  const createNewTaskHandler = (task: ITask, taskName: string, columnId: string) => {
     setBoards((prevState) => {
       if (prevState) {
+        const taskIds = prevState?.columns[columnId].taskIds;
+
         const newState = {
           ...prevState,
           tasks: {
@@ -91,7 +93,7 @@ const Boards = ({ projectName }: BoardsProps) => {
             ...prevState.columns,
             [columnId]: {
               ...prevState.columns[columnId],
-              taskIds: [...prevState?.columns[columnId].taskIds, task.id]
+              taskIds: [...taskIds, task.id]
             }
           }
         };
@@ -99,10 +101,10 @@ const Boards = ({ projectName }: BoardsProps) => {
         return newState;
       }
     })
-  }, [boards])
+  }
 
   // Update Task Title and Description
-  const updateTask = useCallback((task: ITask, newTitle: string, newDescription: string) => {
+  const updateTask = (task: ITask, newTitle: string, newDescription: string) => {
     setBoards((prevState) => {
       if (prevState) {
         const newState = {
@@ -120,10 +122,10 @@ const Boards = ({ projectName }: BoardsProps) => {
         return newState;
       }
     })
-  }, [boards])
+  }
 
   // Remove task from the Board
-  const removeTask = useCallback((taskId: string, column: IColumn) => {
+  const removeTask = (taskId: string, column: IColumn) => {
     setBoards((prevState) => {
       if (prevState) {
         const updatedTaskIds = column.taskIds.filter((id: string) => id !== taskId);
@@ -143,11 +145,11 @@ const Boards = ({ projectName }: BoardsProps) => {
         return newState;
       }
     })
-  }, [boards])
+  }
 
 
   // Sort tasks by task keys
-  const sortTasks = useCallback((sortType: string, column: IColumn) => {
+  const sortTasks = (sortType: string, column: IColumn) => {
     if (column.taskIds.length > 0) {
       setBoards((prevState) => {
         if (prevState) {
@@ -180,7 +182,7 @@ const Boards = ({ projectName }: BoardsProps) => {
       })
     }
     return
-  }, [boards])
+  }
 
   // Updating DND Data state after dropping task into another column
   function onDragEndHandler(result: DropResult) {

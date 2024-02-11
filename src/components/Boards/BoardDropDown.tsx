@@ -18,7 +18,7 @@ type SortByProps = {
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
-};
+}
 
 const BoardDropDown = ({ removeBoard, sortTasks, column }: BoardDropDownProps) => {
   const taskIds = column.taskIds;

@@ -86,7 +86,7 @@ const BoardItemTask = ({ column, task, index, updateTask, removeTask }: TaskProp
                 onBlur={onBlur}
                 onChange={({ target }) => setCurrentTitle(target.value)}
                 onKeyDown={onKeyDown}
-                autoFocus
+                autoFocus={true}
               />
             }
             {!toggleContentEditMode &&
@@ -105,7 +105,7 @@ const BoardItemTask = ({ column, task, index, updateTask, removeTask }: TaskProp
               onChange={({ target }) => setCurrentContent(target.value)}
               onKeyDown={onKeyDown}
               placeholderValue={!currentContent ? 'Add your description' : ''}
-              autoFocus
+              autoFocus={true}
             />}
             <div className={`flex justify-between items-center mt-4 `}>
               <span>{task.author}</span>

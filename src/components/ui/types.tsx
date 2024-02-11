@@ -2,16 +2,16 @@ export type ButtonProps = {
   className?: string;
   children?: React.ReactNode;
   onClick?: () => void;
-};
+}
 
 export interface InputRefType {
   value: string
-};
+}
 
 export interface DialogRefType {
   openDialog: () => void;
   closeDialog: () => void;
-};
+}
 
 export interface InputProps {
   inputId?: string;
@@ -21,14 +21,14 @@ export interface InputProps {
   inputName?: string;
   placeholderValue?: string;
   className?: string;
-  inputRef?: any;
+  inputRef?: React.RefObject<HTMLInputElement>;
   value?: string;
-  required?: any;
-  autoFocus?: any;
+  required?: boolean;
+  autoFocus?: boolean;
   onBlur?: () => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void;
-};
+}
 
 export type ModalProps = {
   titleCaption: string;
@@ -36,20 +36,20 @@ export type ModalProps = {
   className?: string;
   children?: React.ReactNode;
   formRef?: React.RefObject<HTMLFormElement>;
-};
+}
 
 export interface TextAreaProps {
   id?: string;
   name?: string;
   placeholderValue?: string;
   className?: string;
-  textareaRef?: any;
+  textareaRef?: React.RefObject<HTMLTextAreaElement>;
   value?: string;
-  required?: any;
+  required?: HTMLTextAreaElement;
   rows?: number;
   wrap?: string;
-  autoFocus?: any;
+  autoFocus?: boolean;
   onBlur?: () => void;
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;
-};
+}
