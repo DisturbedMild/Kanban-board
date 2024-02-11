@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import Button from '../ui/Button';
 import Modal from '../ui/Modal';
@@ -11,14 +12,14 @@ type HeaderModalProps = {
   dialog: React.RefObject<DialogRefType>
 }
 
-function HeaderModal({ initNewProjectHandler, dialog }: HeaderModalProps) {
+const HeaderModal = ({ initNewProjectHandler, dialog }: HeaderModalProps) => {
   const newProjectNameRef = useRef<HTMLInputElement>(null);
 
-  function onSubmitHandler(e: React.SyntheticEvent) {
+  const onSubmitHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const newProjectName = newProjectNameRef.current?.value ? newProjectNameRef.current.value : '';
-    initNewProjectHandler((Math.random() * 1000).toFixed(2), newProjectName);
-    dialog.current?.closeDialog()
+    initNewProjectHandler(uuidv4(), newProjectName);
+    dialog.current?.closeDialog();
   }
 
   return (

@@ -116,6 +116,6 @@ const BoardItemTask = ({ column, task, index, updateTask, removeTask }: TaskProp
       }}
     </Draggable>
   )
-}
+};
 
 export default BoardItemTask;

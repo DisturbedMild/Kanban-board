@@ -9,11 +9,11 @@ import Button from '../ui/Button';
 import type { ITask } from '../types/types';
 import type { DialogRefType } from '../ui/types';
 
-type NewTaskModalProps = { 
+type NewTaskModalProps = {
   dialog: React.RefObject<DialogRefType>;
   columnId: string;
   createNewTaskHandler: (task: ITask, newTaskName: string, columnId: string) => void;
-}
+};
 
 const NewTaskModal = ({ dialog, createNewTaskHandler, columnId }: NewTaskModalProps) => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -35,7 +35,7 @@ const NewTaskModal = ({ dialog, createNewTaskHandler, columnId }: NewTaskModalPr
     }
 
     createNewTaskHandler(newTask, newTaskId, columnId)
-    
+
     formRef.current?.reset();
     dialog.current?.closeDialog()
   }

@@ -4,19 +4,19 @@ import Input from '../ui/Input';
 
 type NewTasksPlateProps = {
   createNewListHandler: (name: string) => void;
-}
+};
 
-export default function AddNewTasksBoardPlate({ createNewListHandler }: NewTasksPlateProps) {
+const AddNewTasksBoardPlate = ({ createNewListHandler }: NewTasksPlateProps) => {
   const [addNewList, setAddNewList] = useState(false);
   const newListRef = useRef<HTMLInputElement>(null);
 
   const addNewListHandler = () => {
     setAddNewList(true)
-  }
+  };
 
   const closeNewListHandler = () => {
     setAddNewList(false)
-  }
+  };
 
   const onSubmitNewListHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ export default function AddNewTasksBoardPlate({ createNewListHandler }: NewTasks
       createNewListHandler(newListRef.current.value)
     }
     setAddNewList(false);
-  }
+  };
 
   return (
     <>
@@ -64,4 +64,6 @@ export default function AddNewTasksBoardPlate({ createNewListHandler }: NewTasks
       }
     </>
   )
-}
+};
+
+export default AddNewTasksBoardPlate;

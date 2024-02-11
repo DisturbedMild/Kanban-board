@@ -12,12 +12,12 @@ import './boards.css';
 
 type BoardsProps = {
   projectName: string
-}
+};
 
 export type Board = {
   id: string,
   name: string
-}
+};
 
 const Boards = ({ projectName }: BoardsProps) => {
   const [boards, setBoards] = useState<IData>();
@@ -33,7 +33,8 @@ const Boards = ({ projectName }: BoardsProps) => {
           id: columnId,
           title: listTitle,
           taskIds: []
-        }
+        };
+
         newState.columns[columnId] = newColumn;
         newState.columnOrder.push(columnId);
 
@@ -51,7 +52,8 @@ const Boards = ({ projectName }: BoardsProps) => {
             }
           },
           columnOrder: [columnName]
-        }
+        };
+
         return newState;
       }
 
@@ -68,7 +70,7 @@ const Boards = ({ projectName }: BoardsProps) => {
           ...prevState,
           columns: updatedColumn,
           columnOrder: updatedColumnOrder,
-        }
+        };
 
         return newState;
       }
@@ -92,7 +94,7 @@ const Boards = ({ projectName }: BoardsProps) => {
               taskIds: [...prevState?.columns[columnId].taskIds, task.id]
             }
           }
-        }
+        };
 
         return newState;
       }
@@ -113,7 +115,8 @@ const Boards = ({ projectName }: BoardsProps) => {
               content: newDescription
             }
           }
-        }
+        };
+
         return newState;
       }
     })
@@ -135,7 +138,8 @@ const Boards = ({ projectName }: BoardsProps) => {
               taskIds: updatedTaskIds ? updatedTaskIds : []
             }
           }
-        }
+        };
+
         return newState;
       }
     })
@@ -169,7 +173,8 @@ const Boards = ({ projectName }: BoardsProps) => {
                 taskIds: sortedTasks
               }
             }
-          }
+          };
+
           return newState
         }
       })
@@ -202,8 +207,7 @@ const Boards = ({ projectName }: BoardsProps) => {
       const newColumn = {
         ...start,
         taskIds: newTaskIds
-      }
-      
+      };
 
       setBoards((prevState) => {
         if (prevState) {
@@ -234,13 +238,13 @@ const Boards = ({ projectName }: BoardsProps) => {
     const newFinish = {
       ...finish,
       taskIds: finishTaskIds
-    }
+    };
 
     setBoards((prevState) => {
       if (prevState) {
         const newStartId = newStart.id;
         const newFinishId = newFinish.id;
-        
+
         const newState = {
           ...prevState,
           columns: {
@@ -248,7 +252,7 @@ const Boards = ({ projectName }: BoardsProps) => {
             [newStartId]: newStart,
             [newFinishId]: newFinish
           }
-        }
+        };
         return newState
       }
     })

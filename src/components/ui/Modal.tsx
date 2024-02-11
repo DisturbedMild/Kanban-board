@@ -15,12 +15,12 @@ const Modal = forwardRef(function Modal({ titleCaption, modalId, className, form
         dialog.current?.close();
       }
     }
-  })
+  });
 
   const onReset = () => {
     if (formRef) formRef.current?.reset();
     dialog.current?.close();
-  }
+  };
 
   return (
     <dialog ref={dialog} id={modalId} className={className}>
@@ -33,6 +33,6 @@ const Modal = forwardRef(function Modal({ titleCaption, modalId, className, form
       {children}
     </dialog>
   )
-})
+});
 
 export default Modal;

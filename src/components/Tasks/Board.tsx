@@ -18,7 +18,7 @@ type BoardProps = {
   removeTask: (taskId: string, column: IColumn) => void;
   removeBoard: (column: IColumn) => void;
   sortTasks: (sortType: string, column: IColumn) => void;
-}
+};
 
 
 const Board = ({ column, tasks, createNewTaskHandler, updateTask, removeTask, removeBoard, sortTasks }: BoardProps) => {
@@ -28,11 +28,11 @@ const Board = ({ column, tasks, createNewTaskHandler, updateTask, removeTask, re
 
   const openCreateNewTaskHandler = () => {
     dialog.current?.openDialog();
-  }
+  };
 
   const removeBoardHandler = () => {
     removeBoard(column);
-  }
+  };
 
   return (
     <div className='flex flex-col w-60 px-4 py-2 bg-neutral-400/20 rounded-lg h-max'>
@@ -64,6 +64,6 @@ const Board = ({ column, tasks, createNewTaskHandler, updateTask, removeTask, re
       <Button className='text-left' onClick={openCreateNewTaskHandler}>+ New Task</Button>
     </div>
   )
-}
+};
 
 export default Board;

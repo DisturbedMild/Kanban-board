@@ -7,10 +7,10 @@ import HeaderModal from './HeaderModal';
 import type { DialogRefType } from '../ui/types';
 
 export type HeaderProps = {
-  initNewProjectHandler: (id: string, title: string) => void
-}
+  initNewProjectHandler: (id: string, title: string) => void;
+};
 
-export default function Header({ initNewProjectHandler }: HeaderProps) {
+const Header = ({ initNewProjectHandler }: HeaderProps) => {
   const dialog = useRef<DialogRefType>(null);
   const modalElement = document.getElementById('modal');
 
@@ -28,4 +28,6 @@ export default function Header({ initNewProjectHandler }: HeaderProps) {
       </header>
     </>
   )
-}
+};
+
+export default Header;

@@ -12,8 +12,8 @@ const TextArea = ({ id, name, placeholderValue, className, textareaRef, value, r
       onChange={onChange}
       onKeyDown={onKeyDown}
       onBlur={onBlur}
-      autoFocus={autoFocus ? true: false}
-      required={required ? true: false}
+      autoFocus={autoFocus ? true : false}
+      required={required ? true : false}
       rows={rows}
       wrap={wrap}
     >

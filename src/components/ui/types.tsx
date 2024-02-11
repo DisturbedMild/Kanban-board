@@ -2,16 +2,16 @@ export type ButtonProps = {
   className?: string;
   children?: React.ReactNode;
   onClick?: () => void;
-}
+};
 
 export interface InputRefType {
   value: string
-}
+};
 
 export interface DialogRefType {
   openDialog: () => void;
   closeDialog: () => void;
-}
+};
 
 export interface InputProps {
   inputId?: string;
@@ -28,7 +28,7 @@ export interface InputProps {
   onBlur?: () => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?(e: React.KeyboardEvent<HTMLInputElement>): void;
-}
+};
 
 export type ModalProps = {
   titleCaption: string;
@@ -36,8 +36,8 @@ export type ModalProps = {
   className?: string;
   children?: React.ReactNode;
   formRef?: React.RefObject<HTMLFormElement>;
-}
- 
+};
+
 export interface TextAreaProps {
   id?: string;
   name?: string;
@@ -52,4 +52,4 @@ export interface TextAreaProps {
   onBlur?: () => void;
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;
-}
+};

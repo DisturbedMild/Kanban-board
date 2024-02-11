@@ -6,11 +6,11 @@ import Header from './components/layout/Header';
 import Boards from './components/Boards/Boards';
 
 type NewProject = {
-  id: string,
-  title: string
-}
+  id: string;
+  title: string;
+};
 
-const App =() => {
+const App = () => {
   const [currentProject, setCurrentProject] = useState<NewProject>();
 
   const initNewProjectHandler = (id: string, title: string) => setCurrentProject({ id, title });
