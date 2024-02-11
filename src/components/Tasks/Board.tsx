@@ -21,22 +21,21 @@ type BoardProps = {
 }
 
 
-export default function Board({ column, tasks, createNewTaskHandler, updateTask, removeTask, removeBoard, sortTasks }: BoardProps) {
+const Board = ({ column, tasks, createNewTaskHandler, updateTask, removeTask, removeBoard, sortTasks }: BoardProps) => {
   const dialog = useRef<DialogRefType>(null);
 
   const modalElement = document.getElementById('modal');
 
-  function openCreateNewTaskHandler() {
+  const openCreateNewTaskHandler = () => {
     dialog.current?.openDialog();
   }
 
-  function removeBoardHandler() {
-    removeBoard(column)
+  const removeBoardHandler = () => {
+    removeBoard(column);
   }
 
   return (
     <div className='flex flex-col w-60 px-4 py-2 bg-neutral-400/20 rounded-lg h-max'>
-
       <div className='flex justify-between items-center mb-5 pb-3 border-b-2'>
         <h2 className='text-xl text-neutral-100'>{column.title}</h2>
         <BoardDropDown removeBoard={removeBoardHandler} sortTasks={sortTasks} column={column} />
@@ -67,3 +66,4 @@ export default function Board({ column, tasks, createNewTaskHandler, updateTask,
   )
 }
 
+export default Board;

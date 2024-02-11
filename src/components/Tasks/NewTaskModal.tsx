@@ -1,4 +1,6 @@
 import { useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import Modal from '../ui/Modal';
 import Input from '../ui/Input';
 import TextArea from '../ui/TextArea';
@@ -13,27 +15,26 @@ type NewTaskModalProps = {
   createNewTaskHandler: (task: ITask, newTaskName: string, columnId: string) => void;
 }
 
-export default function NewTaskModal({ dialog, createNewTaskHandler, columnId }: NewTaskModalProps) {
+const NewTaskModal = ({ dialog, createNewTaskHandler, columnId }: NewTaskModalProps) => {
   const formRef = useRef<HTMLFormElement>(null);
   const newTaskTitleRef = useRef<HTMLInputElement>(null);
   const newTaskDescriptionRef = useRef<HTMLInputElement>(null);
   const newTaskAuthorRef = useRef<HTMLInputElement>(null);
   const newTaskDateRef = useRef<HTMLInputElement>(null);
 
-  function onSubmitHandler(e: React.SyntheticEvent) {
+  const onSubmitHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    const newTaskId = (Math.random() * 1000).toFixed(0).toString();
-    const newTaskName = `task-${newTaskId}`;
+    const newTaskId = uuidv4();
     const newTask = {
-      id: `task-${newTaskId}`,
+      id: newTaskId,
       title: newTaskTitleRef.current?.value || '',
       content: newTaskDescriptionRef.current?.value || '',
       author: newTaskAuthorRef.current?.value || '',
       date: newTaskDateRef.current?.value || ''
     }
 
-    createNewTaskHandler(newTask, newTaskName, columnId)
+    createNewTaskHandler(newTask, newTaskId, columnId)
     
     formRef.current?.reset();
     dialog.current?.closeDialog()
@@ -51,3 +52,5 @@ export default function NewTaskModal({ dialog, createNewTaskHandler, columnId }:
     </Modal>
   )
 };
+
+export default NewTaskModal;

@@ -1,6 +1,6 @@
 import type { InputProps } from "./types";
 
-export default function Input({ inputId, type, inputName, placeholderValue, className, inputRef, value, onChange, onKeyDown, onBlur, autoFocus, required, min, max }: InputProps) {
+const Input = ({ inputId, type, inputName, placeholderValue, className, inputRef, value, onChange, onKeyDown, onBlur, autoFocus, required, min, max }: InputProps) => {
   return (<input
     id={inputId}
     type={type ? type : "text"}
@@ -18,3 +18,5 @@ export default function Input({ inputId, type, inputName, placeholderValue, clas
     required={required ? true : false}
   />)
 };
+
+export default Input;

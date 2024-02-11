@@ -10,21 +10,20 @@ export default function AddNewTasksBoardPlate({ createNewListHandler }: NewTasks
   const [addNewList, setAddNewList] = useState(false);
   const newListRef = useRef<HTMLInputElement>(null);
 
-  function addNewListHandler() {
+  const addNewListHandler = () => {
     setAddNewList(true)
   }
 
-  function closeNewListHandler() {
+  const closeNewListHandler = () => {
     setAddNewList(false)
   }
 
-  function onSubmitNewListHandler(e: React.SyntheticEvent) {
+  const onSubmitNewListHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
     if (newListRef.current) {
       createNewListHandler(newListRef.current.value)
     }
-
     setAddNewList(false);
   }
 

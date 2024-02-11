@@ -15,22 +15,21 @@ type TaskProps = {
   removeTask: (taskId: string, column: IColumn) => void;
 }
 
-
-export default function BoardItemTask({ column, task, index, updateTask, removeTask }: TaskProps) {
+const BoardItemTask = ({ column, task, index, updateTask, removeTask }: TaskProps) => {
   const [toggleTitleEditMode, setToggleTitleEditMode] = useState(false);
   const [toggleContentEditMode, setToggleContentEditMode] = useState(false);
   const [currentTitle, setCurrentTitle] = useState(task.title);
   const [currentContent, setCurrentContent] = useState(task.content);
 
-  function initTitleEditModeHandler() {
+  const initTitleEditModeHandler = () => {
     setToggleTitleEditMode(true);
   }
 
-  function initContentEditModeHandler() {
+  const initContentEditModeHandler = () => {
     setToggleContentEditMode(true);
   }
 
-  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       if (currentTitle || currentContent) {
@@ -47,12 +46,12 @@ export default function BoardItemTask({ column, task, index, updateTask, removeT
     }
   }
 
-  function onBlur() {
+  const onBlur = () => {
     setToggleTitleEditMode(false);
     setToggleContentEditMode(false);
   }
 
-  function removeTaskHandler() {
+  const removeTaskHandler = () => {
     removeTask(task.id, column);
   }
 
@@ -118,3 +117,5 @@ export default function BoardItemTask({ column, task, index, updateTask, removeT
     </Draggable>
   )
 }
+
+export default BoardItemTask;

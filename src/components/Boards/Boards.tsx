@@ -1,9 +1,12 @@
-import { useState } from 'react'
-import AddNewTasksBoardPlate from './AddNewTasksBoardPlate'
-import Board from '../Tasks/Board';
+import { useCallback, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { DragDropContext } from 'react-beautiful-dnd';
+
+import AddNewTasksBoardPlate from './AddNewTasksBoardPlate';
+import Board from '../Tasks/Board';
+
 import type { DropResult } from 'react-beautiful-dnd';
-import { IColumn, IData, ITask } from '../types/types';
+import type { IColumn, IData, ITask } from '../types/types';
 
 import './boards.css';
 
@@ -16,32 +19,32 @@ export type Board = {
   name: string
 }
 
-export default function Boards({ projectName }: BoardsProps) {
+const Boards = ({ projectName }: BoardsProps) => {
   const [boards, setBoards] = useState<IData>();
 
   // Creating new empty board list
-  function createNewListHandler(listTitle: string) {
+  const createNewListHandler = useCallback((listTitle: string) => {
     setBoards((prevState) => {
       if (prevState) {
 
         const newState = { ...prevState };
-        const columnsCounter = `column-${(Math.random() * 1000).toFixed(0).toString()}`;
+        const columnId = uuidv4();
         const newColumn = {
-          id: `${columnsCounter}`,
+          id: columnId,
           title: listTitle,
           taskIds: []
         }
-        newState.columns[columnsCounter] = newColumn;
-        newState.columnOrder.push(columnsCounter);
+        newState.columns[columnId] = newColumn;
+        newState.columnOrder.push(columnId);
 
         return newState
       } else {
-        const columnName = `column-${(Math.random() * 1000).toFixed(0).toString()}`;
+        const columnName = uuidv4();
         const newState = {
           tasks: {
           },
           columns: {
-            [`${columnName}`]: {
+            [columnName]: {
               id: columnName,
               title: listTitle,
               taskIds: []
@@ -49,14 +52,13 @@ export default function Boards({ projectName }: BoardsProps) {
           },
           columnOrder: [columnName]
         }
-        console.log(newState);
         return newState;
       }
 
     })
-  }
+  }, [boards])
 
-  function removeBoard(column: IColumn) {
+  const removeBoard = useCallback((column: IColumn) => {
     setBoards((prevState) => {
       if (prevState) {
         const updatedColumnOrder = prevState?.columnOrder.filter((id: string) => id !== column.id);
@@ -71,10 +73,10 @@ export default function Boards({ projectName }: BoardsProps) {
         return newState;
       }
     })
-  }
+  }, [boards])
 
   // Creating new Task
-  function createNewTaskHandler(task: ITask, taskName: string, columnId: string) {
+  const createNewTaskHandler = useCallback((task: ITask, taskName: string, columnId: string) => {
     setBoards((prevState) => {
       if (prevState) {
         const newState = {
@@ -95,10 +97,10 @@ export default function Boards({ projectName }: BoardsProps) {
         return newState;
       }
     })
-  }
+  }, [boards])
 
   // Update Task Title and Description
-  function updateTask(task: ITask, newTitle: string, newDescription: string) {
+  const updateTask = useCallback((task: ITask, newTitle: string, newDescription: string) => {
     setBoards((prevState) => {
       if (prevState) {
         const newState = {
@@ -115,10 +117,10 @@ export default function Boards({ projectName }: BoardsProps) {
         return newState;
       }
     })
-  }
+  }, [boards])
 
   // Remove task from the Board
-  function removeTask(taskId: string, column: IColumn) {
+  const removeTask = useCallback((taskId: string, column: IColumn) => {
     setBoards((prevState) => {
       if (prevState) {
         const updatedTaskIds = column.taskIds.filter((id: string) => id !== taskId);
@@ -137,20 +139,23 @@ export default function Boards({ projectName }: BoardsProps) {
         return newState;
       }
     })
-  }
+  }, [boards])
 
 
   // Sort tasks by task keys
-  function sortTasks(sortType: string, column: IColumn) {
+  const sortTasks = useCallback((sortType: string, column: IColumn) => {
     if (column.taskIds.length > 0) {
       setBoards((prevState) => {
         if (prevState) {
           const taskIds = column.taskIds;
           const sortedTasks: string[] = taskIds.sort((a, b) => {
-            if (prevState.tasks[`${a}`][sortType] > prevState.tasks[`${b}`][sortType]) {
+            const curr = prevState.tasks[a][sortType];
+            const next = prevState.tasks[b][sortType];
+
+            if (curr > next) {
               return 1
             }
-            if (prevState.tasks[`${a}`][sortType] < prevState.tasks[`${b}`][sortType]) {
+            if (curr < next) {
               return -1
             }
             return 0
@@ -170,7 +175,7 @@ export default function Boards({ projectName }: BoardsProps) {
       })
     }
     return
-  }
+  }, [boards])
 
   // Updating DND Data state after dropping task into another column
   function onDragEndHandler(result: DropResult) {
@@ -198,14 +203,16 @@ export default function Boards({ projectName }: BoardsProps) {
         ...start,
         taskIds: newTaskIds
       }
+      
 
       setBoards((prevState) => {
         if (prevState) {
+          const newColumnId = newColumn.id;
           const newState = {
             ...prevState,
             columns: {
               ...prevState.columns,
-              [`${newColumn.id}`]: newColumn
+              [newColumnId]: newColumn
             }
           }
           return newState
@@ -231,12 +238,15 @@ export default function Boards({ projectName }: BoardsProps) {
 
     setBoards((prevState) => {
       if (prevState) {
+        const newStartId = newStart.id;
+        const newFinishId = newFinish.id;
+        
         const newState = {
           ...prevState,
           columns: {
             ...prevState?.columns,
-            [`${newStart.id}`]: newStart,
-            [`${newFinish.id}`]: newFinish
+            [newStartId]: newStart,
+            [newFinishId]: newFinish
           }
         }
         return newState
@@ -278,3 +288,5 @@ export default function Boards({ projectName }: BoardsProps) {
     </section>
   )
 }
+
+export default Boards;

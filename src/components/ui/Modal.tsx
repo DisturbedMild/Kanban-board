@@ -17,7 +17,7 @@ const Modal = forwardRef(function Modal({ titleCaption, modalId, className, form
     }
   })
 
-  function onReset() {
+  const onReset = () => {
     if (formRef) formRef.current?.reset();
     dialog.current?.close();
   }

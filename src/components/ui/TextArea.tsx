@@ -1,6 +1,6 @@
 import type { TextAreaProps } from "./types";
 
-export default function TextArea({ id, name, placeholderValue, className, textareaRef, value, rows, wrap, onChange, onKeyDown, onBlur, autoFocus, required }: TextAreaProps) {
+const TextArea = ({ id, name, placeholderValue, className, textareaRef, value, rows, wrap, onChange, onKeyDown, onBlur, autoFocus, required }: TextAreaProps) => {
   return (
     <textarea
       id={id}
@@ -20,3 +20,5 @@ export default function TextArea({ id, name, placeholderValue, className, textar
     </textarea>
   )
 }
+
+export default TextArea;
