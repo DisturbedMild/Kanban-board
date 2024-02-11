@@ -1,5 +1,5 @@
-.boards-inner {
-  height: calc(100vh - 161px);
+.board-wrapper {
+  height: calc(100vh - 82px);
 }
 
 ::-webkit-scrollbar {

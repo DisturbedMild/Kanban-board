@@ -267,7 +267,7 @@ const Boards = ({ projectName }: BoardsProps) => {
           <h2 className='text-1xl font-semibold'>{projectName}</h2>
         </div>
       </div>
-      <div className='px-32 mt-6 overflow-auto h-screen'>
+      <div className='px-32 mt-6 overflow-auto board-wrapper'>
         <div className={'flex gap-4 w-fit'}>
           <DragDropContext onDragEnd={onDragEndHandler}>
             <div className='board-columns flex gap-4 boards-inner w-fit'>

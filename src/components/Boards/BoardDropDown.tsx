@@ -11,7 +11,7 @@ type BoardDropDownProps = {
 };
 
 type SortByProps = {
-  active: boolean;
+  active: any;
   onClick: () => void;
   children?: React.ReactNode;
 };
