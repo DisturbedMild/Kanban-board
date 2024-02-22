@@ -6,31 +6,26 @@ import { IColumn } from '../types/types';
 
 type BoardDropDownProps = {
   column: IColumn;
-  removeBoard: (column: IColumn) => void;
+  removeBoard: (id: string) => void;
   sortTasks: (sortType: string, column: IColumn) => void;
 };
 
 type SortByProps = {
-  active: any;
+  active: boolean;
   onClick: () => void;
   children?: React.ReactNode;
 };
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
-const BoardDropDown = ({ removeBoard, sortTasks, column }: BoardDropDownProps) => {
+const BoardMenu = ({ removeBoard, sortTasks, column }: BoardDropDownProps) => {
   const taskIds = column.taskIds;
 
   const SortByComponent = ({ active, onClick, children }: SortByProps) => {
+    const classes = active ? 'bg-gray-100 text-gray-900' : 'text-gray-700 block px-4 py-2 text-sm';
+
     return (
       <a
         href='#'
-        className={classNames(
-          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-          'block px-4 py-2 text-sm'
-        )}
+        className={classes}
         onClick={onClick}
       >
         {children}
@@ -64,13 +59,13 @@ const BoardDropDown = ({ removeBoard, sortTasks, column }: BoardDropDownProps) =
               {({ active }) => <SortByComponent active={active} onClick={() => sortTasks('date', column)}>Sort by Date</SortByComponent>}
             </Menu.Item>
             <Menu.Item>
-              {({ active }) => <SortByComponent active={active} onClick={() => sortTasks('title', column)}>Sort by Ttile</SortByComponent>}
+              {({ active }) => <SortByComponent active={active} onClick={() => sortTasks('title', column)}>Sort by Title</SortByComponent>}
             </Menu.Item>
           </div> : null}
 
           <div className='py-1'>
             <Menu.Item>
-              {({ active }) => <SortByComponent active={active} onClick={() => removeBoard(column)}>Delete</SortByComponent>}
+              {({ active }) => <SortByComponent active={active} onClick={() => removeBoard(column.id)}>Delete</SortByComponent>}
             </Menu.Item>
           </div>
         </Menu.Items>
@@ -79,4 +74,4 @@ const BoardDropDown = ({ removeBoard, sortTasks, column }: BoardDropDownProps) =
   )
 };
 
-export default BoardDropDown;
+export default BoardMenu;

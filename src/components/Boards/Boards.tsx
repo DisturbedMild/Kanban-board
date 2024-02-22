@@ -1,14 +1,11 @@
-import { useCallback, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { DragDropContext } from 'react-beautiful-dnd';
+import {DragDropContext} from 'react-beautiful-dnd';
 
 import AddNewTasksBoardPlate from './AddNewTasksBoardPlate';
 import Board from '../Tasks/Board';
 
-import type { DropResult } from 'react-beautiful-dnd';
-import type { IColumn, IData, ITask } from '../types/types';
 
 import './boards.css';
+import useBoard from "../../hooks/Boards.hooks.tsx";
 
 type BoardsProps = {
   projectName: string
@@ -20,245 +17,16 @@ export type Board = {
 };
 
 const Boards = ({ projectName }: BoardsProps) => {
-  const [boards, setBoards] = useState<IData>();
-
-  // Creating new empty board list
-  const createNewListHandler = useCallback((listTitle: string) => {
-    setBoards((prevState) => {
-      if (prevState) {
-
-        const newState = { ...prevState };
-        const columnId = uuidv4();
-        const newColumn = {
-          id: columnId,
-          title: listTitle,
-          taskIds: []
-        };
-
-        newState.columns[columnId] = newColumn;
-        newState.columnOrder.push(columnId);
-
-        return newState
-      } else {
-        const columnName = uuidv4();
-        const newState = {
-          tasks: {
-          },
-          columns: {
-            [columnName]: {
-              id: columnName,
-              title: listTitle,
-              taskIds: []
-            }
-          },
-          columnOrder: [columnName]
-        };
-
-        return newState;
-      }
-
-    })
-  }, [boards])
-
-  const removeBoard = useCallback((column: IColumn) => {
-    setBoards((prevState) => {
-      if (prevState) {
-        const updatedColumnOrder = prevState?.columnOrder.filter((id: string) => id !== column.id);
-        const updatedColumn = Object.fromEntries(Object.entries(prevState.columns).filter(([key]) => key !== column.id));
-
-        const newState = {
-          ...prevState,
-          columns: updatedColumn,
-          columnOrder: updatedColumnOrder,
-        };
-
-        return newState;
-      }
-    })
-  }, [boards])
-
-  // Creating new Task
-  const createNewTaskHandler = useCallback((task: ITask, taskName: string, columnId: string) => {
-    setBoards((prevState) => {
-      if (prevState) {
-        const taskIds = prevState?.columns[columnId].taskIds;
-
-        const newState = {
-          ...prevState,
-          tasks: {
-            ...prevState.tasks,
-            [taskName]: task
-          },
-          columns: {
-            ...prevState.columns,
-            [columnId]: {
-              ...prevState.columns[columnId],
-              taskIds: [...taskIds, task.id]
-            }
-          }
-        };
-
-        return newState;
-      }
-    })
-  }, [boards])
-
-  // Update Task Title and Description
-  const updateTask = useCallback((task: ITask, newTitle: string, newDescription: string) => {
-    setBoards((prevState) => {
-      if (prevState) {
-        const newState = {
-          ...prevState,
-          tasks: {
-            ...prevState.tasks,
-            [task.id]: {
-              ...task,
-              title: newTitle,
-              content: newDescription
-            }
-          }
-        };
-
-        return newState;
-      }
-    })
-  }, [boards])
-
-  // Remove task from the Board
-  const removeTask = useCallback((taskId: string, column: IColumn) => {
-    setBoards((prevState) => {
-      if (prevState) {
-        const updatedTaskIds = column.taskIds.filter((id: string) => id !== taskId);
-        const updatedTasks = Object.fromEntries(Object.entries(prevState.tasks).filter(([key]) => key !== taskId));
-        const newState = {
-          ...prevState,
-          tasks: updatedTasks,
-          columns: {
-            ...prevState.columns,
-            [column.id]: {
-              ...prevState.columns[column.id],
-              taskIds: updatedTaskIds ? updatedTaskIds : []
-            }
-          }
-        };
-
-        return newState;
-      }
-    })
-  }, [boards])
-
-
-  // Sort tasks by task keys
-  const sortTasks = useCallback((sortType: string, column: IColumn) => {
-    if (column.taskIds.length > 0) {
-      setBoards((prevState) => {
-        if (prevState) {
-          const taskIds = column.taskIds;
-          const sortedTasks: string[] = taskIds.sort((a, b) => {
-            const curr = prevState.tasks[a][sortType];
-            const next = prevState.tasks[b][sortType];
-
-            if (curr > next) {
-              return 1
-            }
-            if (curr < next) {
-              return -1
-            }
-            return 0
-          });
-          const newState = {
-            ...prevState,
-            columns: {
-              ...prevState?.columns,
-              [column.id]: {
-                ...prevState?.columns[column.id],
-                taskIds: sortedTasks
-              }
-            }
-          };
-
-          return newState
-        }
-      })
-    }
-    return
-  }, [boards])
-
-  // Updating DND Data state after dropping task into another column
-  function onDragEndHandler(result: DropResult) {
-    const { destination, source, draggableId } = result;
-
-    if (!destination) return;
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return
-    }
-
-    const start = boards?.columns[source.droppableId];
-    const finish = boards?.columns[destination.droppableId];
-
-    // if Drop board is the same do default manipulations
-    if (start === finish) {
-      const newTaskIds = start?.taskIds;
-      newTaskIds?.splice(source.index, 1);
-      newTaskIds?.splice(destination.index, 0, draggableId);
-
-      const newColumn = {
-        ...start,
-        taskIds: newTaskIds
-      };
-
-      setBoards((prevState) => {
-        if (prevState) {
-          const newColumnId = newColumn.id;
-          const newState = {
-            ...prevState,
-            columns: {
-              ...prevState.columns,
-              [newColumnId]: newColumn
-            }
-          }
-          return newState
-        }
-      })
-      return
-    }
-
-    // Moving from one list to another
-    const startTaskIds = start?.taskIds;
-    startTaskIds?.splice(source.index, 1);
-    const newStart = {
-      ...start,
-      taskIds: startTaskIds
-    }
-
-    const finishTaskIds = finish?.taskIds;
-    finishTaskIds?.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finish,
-      taskIds: finishTaskIds
-    };
-
-    setBoards((prevState) => {
-      if (prevState) {
-        const newStartId = newStart.id;
-        const newFinishId = newFinish.id;
-
-        const newState = {
-          ...prevState,
-          columns: {
-            ...prevState?.columns,
-            [newStartId]: newStart,
-            [newFinishId]: newFinish
-          }
-        };
-        return newState
-      }
-    })
-  }
+  const {
+    boards,
+    onDragEndHandler,
+    sortTasks,
+    removeTask,
+    createNewListHandler,
+    updateTask,
+    createNewTaskHandler,
+    removeBoard
+  } = useBoard();
 
   return (
     <section className='boards' id='boards'>
