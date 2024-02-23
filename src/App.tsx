@@ -12,7 +12,6 @@ type NewProject = {
 
 const App = () => {
   const [currentProject, setCurrentProject] = useState<NewProject>();
-
   const initNewProjectHandler = (id: string, title: string) => setCurrentProject({ id, title });
 
   return <>
